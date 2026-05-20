@@ -134,6 +134,6 @@ class VisualizadorTerreno(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ventana = VisualizadorTerreno('mapa_test.csv')
+    ventana = VisualizadorTerreno('data/mapa_test.csv')
     ventana.show()
     sys.exit(app.exec())
