@@ -34,6 +34,22 @@ tipos_vivienda={1: 'Casa Unifamiliar',
                 4: 'Vivienda Social',
                 5: 'Casa Grande'}
 
+periodos={1: 'Marzo',
+          2: 'Abril',
+          3: 'Mayo',
+          4: 'Junio',
+          5: 'Julio',
+          6: 'Agosto',
+          7: 'Septiembre',
+          8: 'Octubre',
+          9: 'Noviembre',
+          10: 'Diciembre'}
+
+tecnologias={1: 'Pala',
+             2: 'Retroexcavadora',
+             3: 'Bulldozer',
+             4: '',
+             5: ''}
 
 
 def crear_datos(x, y):
@@ -129,5 +145,5 @@ def valores_infraestructura(tipo_terreno, poblacion):
         i+=1
     return salida
 
-crear_datos(120, 100)
+crear_datos(10, 10)
 
