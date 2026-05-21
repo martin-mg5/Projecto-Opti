@@ -43,8 +43,7 @@ periodos={1: 'Marzo',
           6: 'Agosto',
           7: 'Septiembre',
           8: 'Octubre',
-          9: 'Noviembre',
-          10: 'Diciembre'}
+          9: 'Noviembre'}
 
 tecnologias={1: 'Palas y Hachas',
              2: 'Retroexcavadora',
