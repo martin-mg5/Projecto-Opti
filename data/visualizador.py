@@ -80,8 +80,18 @@ class VisualizadorTerreno(QWidget):
         
         try:
             with open(self.archivo_csv, 'r', encoding='UTF-8') as file:
+                # CORRECCIÓN: Saltamos las dos primeras líneas de metadatos
+                next(file) # Salta la línea 'dimension_x, dimension_y'
+                next(file) # Salta la línea '100,100'
+                
+                # Ahora le pasamos el archivo al DictReader desde la tercera línea
                 lector_csv = csv.DictReader(file)
+                
                 for fila in lector_csv:
+                    # Agregamos validación por si hay líneas en blanco al final del archivo
+                    if not fila or 'nodo_id' not in fila:
+                        continue
+                        
                     nodo_id = fila['nodo_id']
                     r = int(fila['nodo_fila']) 
                     c = int(fila['nodo_columna']) 
@@ -95,6 +105,9 @@ class VisualizadorTerreno(QWidget):
         except FileNotFoundError:
             print(f"Error: No se encontró el archivo {self.archivo_csv}")
             sys.exit(1)
+        except Exception as e:
+             print(f"Error al leer el CSV: {e}")
+             sys.exit(1)
 
         # El total de columnas y filas es el máximo índice + 1
         total_filas = max_r + 1

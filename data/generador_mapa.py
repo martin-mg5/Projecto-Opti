@@ -1,3 +1,5 @@
+from diccionarios import (tipos_de_terreno, limites_poblacion_terreno, infraestructuras, servicios, tipos_vivienda,
+                          periodos, tecnologias, direccion_viento, fallas, ecosistemas)
 import random
 import math
 
@@ -5,60 +7,13 @@ hectareas_por_nodo=10
 kilometros_cuadrados_por_nodo=hectareas_por_nodo*0.01
 población_límite=int(1039*kilometros_cuadrados_por_nodo)
 
-tipos_de_terreno={1: 'Bosque Denso', 
-                  2: 'Bosque no Denso',
-                  3: 'Baldío',
-                  4: 'Zona Urbana',
-                  5: 'Área Silveste Protegida'}
-
-limites_poblacion_terreno={'Bosque Denso': (0, 3), 
-                  'Bosque no Denso': (0, 3),
-                  'Baldío': (0, 1),
-                  'Zona Urbana': (int(125*kilometros_cuadrados_por_nodo), int(1039*kilometros_cuadrados_por_nodo)),
-                  'Área Silveste Protegida': (0, 1)}
-
-infraestructuras={1: 'Metros carreteras',
-                2: 'Metros de tendido eléctrico',
-                3: 'Centros de Salud',
-                4: 'Postas de Salud Rural',
-                5: 'Escuelas',
-                6: 'Telecomunicaciones'}
-
-servicios={1: 'Consumo Agua (L)',
-           2: 'Consumo Electricidad(kwH)',
-           3: 'Consumo Gas(m3)'}
-
-tipos_vivienda={1: 'Casa Unifamiliar',
-                2: 'Departamento 5 a 10 pisos',
-                3: 'Departamente más de 10 pisos',
-                4: 'Vivienda Social',
-                5: 'Casa Grande'}
-
-periodos={1: 'Marzo',
-          2: 'Abril',
-          3: 'Mayo',
-          4: 'Junio',
-          5: 'Julio',
-          6: 'Agosto',
-          7: 'Septiembre',
-          8: 'Octubre',
-          9: 'Noviembre',
-          10: 'Diciembre'}
-
-tecnologias={1: 'Palas y Hachas',
-             2: 'Retroexcavadora',
-             3: 'Bulldozer',
-             4: 'Tractor',
-             5: 'Motoniveladora'}
-
-
 def crear_datos(x, y):
     with open('data/mapa_test.csv', 'w', encoding='UTF-8') as archivo:
-        primera_linea='dimension_x, dimension_y'
+        primera_linea='Dimension X,Dimension Y,Dirección del Viento\n'
         archivo.write(primera_linea)
-        segunda_linea=f'{x},{y}'
+        segunda_linea=f'{x},{y},{definir_viento()}\n'
         archivo.write(segunda_linea)
-        tercera_linea=f'nodo_id,nodo_fila,nodo_columna,tipo_de_terreno,población,{string_aux(infraestructuras)},{string_aux(servicios)}\n'
+        tercera_linea=f'Nodo ID,Nodo Fila,Nodo Columna,Tipo de Terreno,Población,{string_aux(tipos_vivienda)},{string_aux(infraestructuras)},{string_aux(servicios)},{string_aux(fallas)},{string_aux(ecosistemas)}\n'
         archivo.write(tercera_linea)
         centro_ciudad=(random.randint(0, x-1), random.randint(0, y-1))
         centro_protegido=(random.randint(0, x-1), random.randint(0, y-1))
@@ -71,7 +26,7 @@ def crear_datos(x, y):
         i=0
         while i<y:
             j=0
-            while j <x:
+            while j<x:
                 dist_ciudad=math.dist((j, i), centro_ciudad)
                 dist_protegido=math.dist((j, i), centro_protegido)
                 dist_baldio=math.dist((j, i), centro_baldio)
@@ -97,11 +52,14 @@ def crear_datos(x, y):
                 infraestructura=valores_infraestructura(tipo_terreno, poblacion_aux)
                 servicios_aux=valores_servicios(poblacion_aux)
                 falla=dias_falla()
-                linea_aux=f'{id_actual},{j},{i},{tipo_terreno},{poblacion_aux},{infraestructura},{servicios_aux},{falla}\n'
+                ecos=areas_ecosistemas(tipo_terreno)
+                viviendas_aux=viviendas(tipo_terreno, poblacion_aux)
+                linea_aux=f'{id_actual},{j},{i},{tipo_terreno},{poblacion_aux},{viviendas_aux},{infraestructura},{servicios_aux},{falla},{ecos}\n'
                 archivo.write(linea_aux)
                 id_actual+=1
                 j+=1
             i+=1
+        i=0
 
 def poblacion_calculo(tipo_de_terreno):
     return random.randint(*limites_poblacion_terreno[tipo_de_terreno])
@@ -155,6 +113,9 @@ def valores_infraestructura(tipo_terreno, poblacion):
         i+=1
     return salida
 
+
+def definir_viento():
+    return direccion_viento[random.randint(1, 8)]
 def valores_servicios(poblacion):
     agua=random.randint(120, 200)*poblacion
     electricidad=random.randint(10, 30)*poblacion
@@ -173,10 +134,12 @@ def valores_servicios(poblacion):
 def dias_falla():
     valores=[]
     aux=servicios.keys()
+    salida=''
     i=0
     while i<len(aux):
         valores.append(random.randint(1,7))
         i+=1
+    i=0
     while i<len(valores):
         if i!=len(valores)-1:
             salida=salida+f'{valores[i]},'
@@ -184,6 +147,71 @@ def dias_falla():
             salida=salida+f'{valores[i]}'
         i+=1
     return salida
+
+def areas_ecosistemas(tipo_terreno):
+    if tipo_terreno=='Zona Urbana':
+        eco_1=0
+        eco_2=0
+        eco_3=0
+        return f'{eco_1},{eco_2},{eco_3}'
+    elif tipo_terreno=='Bosque Denso':
+        area_usada=hectareas_por_nodo/2
+    elif tipo_terreno=='Bosque no Denso':
+        area_usada=hectareas_por_nodo/3
+    elif tipo_terreno=='Área Silveste Protegida':
+        area_usada=hectareas_por_nodo
+    else:
+        area_usada=0
+    r1=random.random()
+    r2=random.random()
+    r3=random.random()
+    suma_r=r1+r2+r3
+    eco_1=round((r1/suma_r)*area_usada, 2)
+    eco_2=round((r2/suma_r)*area_usada, 2)
+    eco_3=round((r3/suma_r)*area_usada, 2)
+
+    return f'{eco_1},{eco_2},{eco_3}'
+
+def viviendas(tipo_terreno, poblacion):
+    total_viviendas=poblacion//4
+
+    c_uni=0
+    d_5_10=0
+    d_mas_10=0
+    v_soc=0
+    c_grande=0
+    if total_viviendas==0:
+        return f'{c_uni},{d_5_10},{d_mas_10},{v_soc},{c_grande}'
+
+    if tipo_terreno == 'Zona Urbana':
+        total_deptos=int(total_viviendas*0.25)
+
+        d_mas_10=int(total_deptos*0.30)
+        d_5_10=total_deptos-d_mas_10
+        
+        restantes=total_viviendas-total_deptos
+        r1=random.random()
+        r2=random.random()
+        r3=random.random()
+        suma=r1+r2+r3
+        
+        c_uni=int((r1/suma)*restantes)
+        v_soc=int((r2/suma)*restantes)
+        c_grande=restantes-(c_uni+v_soc)
+
+    elif tipo_terreno == 'Bosque no Denso':
+        r1=random.random()
+        r2=random.random()
+        suma=r1+r2
+        c_uni=int((r1/suma)*total_viviendas)
+        c_grande=total_viviendas-c_uni
+
+    elif tipo_terreno=='Bosque Denso':
+        c_grande=total_viviendas
+
+    elif tipo_terreno in ['Área Silveste Protegida', 'Baldío']:
+        pass
+    return f'{c_uni},{d_5_10},{d_mas_10},{v_soc},{c_grande}'
 
 crear_datos(100, 100)
 
