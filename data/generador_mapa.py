@@ -93,7 +93,7 @@ def valores_infraestructura(tipo_terreno, poblacion):
     elif tipo_terreno in ['Bosque Denso', 'Bosque no Denso']:
         carreteras=random.randint(200, 1000)
         if poblacion>=0:
-            postas_rurales=1
+            postas_rurales=random.randint(0,1)
             escuelas=random.randint(0, 1)
             telecom=random.randint(0, 1)
             tendido=carreteras
@@ -116,6 +116,7 @@ def valores_infraestructura(tipo_terreno, poblacion):
 
 def definir_viento():
     return direccion_viento[random.randint(1, 8)]
+
 def valores_servicios(poblacion):
     agua=random.randint(120, 200)*poblacion
     electricidad=random.randint(10, 30)*poblacion
