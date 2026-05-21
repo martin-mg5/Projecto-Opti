@@ -54,7 +54,7 @@ def crear_datos(x, y):
                 falla=dias_falla()
                 ecos=areas_ecosistemas(tipo_terreno)
                 viviendas_aux=viviendas(tipo_terreno, poblacion_aux)
-                linea_aux=f'{id_actual},{j},{i},{tipo_terreno},{poblacion_aux},{viviendas_aux},{infraestructura},{servicios_aux},{falla},{ecos}\n'
+                linea_aux=f'{id_actual},{i},{j},{tipo_terreno},{poblacion_aux},{viviendas_aux},{infraestructura},{servicios_aux},{falla},{ecos}\n'
                 archivo.write(linea_aux)
                 id_actual+=1
                 j+=1
