@@ -1,4 +1,4 @@
-hectareas_por_nodo=10
+hectareas_por_nodo=500
 kilometros_cuadrados_por_nodo=hectareas_por_nodo*0.01
 población_límite=int(1039*kilometros_cuadrados_por_nodo)
 
@@ -8,11 +8,11 @@ tipos_de_terreno={1: 'Bosque Denso',
                   4: 'Zona Urbana',
                   5: 'Área Silveste Protegida'}
 
-limites_poblacion_terreno={'Bosque Denso': (0, 3), 
-                  'Bosque no Denso': (0, 3),
-                  'Baldío': (0, 1),
-                  'Zona Urbana': (int(125*kilometros_cuadrados_por_nodo), int(1039*kilometros_cuadrados_por_nodo)),
-                  'Área Silveste Protegida': (0, 1)}
+limites_poblacion_terreno={'Bosque Denso': (0, 10), 
+                  'Bosque no Denso': (0, int(125*kilometros_cuadrados_por_nodo*0.7)),
+                  'Baldío': (0, 5),
+                  'Zona Urbana': (int(125*kilometros_cuadrados_por_nodo*2), int(1039*kilometros_cuadrados_por_nodo)),
+                  'Área Silveste Protegida': (1, 15)}
 
 infraestructuras={1: 'Metros carreteras',
                 2: 'Metros de tendido eléctrico',
@@ -21,9 +21,13 @@ infraestructuras={1: 'Metros carreteras',
                 5: 'Escuelas',
                 6: 'Telecomunicaciones'}
 
-servicios={1: 'Consumo Agua (L)',
+servicios={1: 'Consumo Agua (m3)',
            2: 'Consumo Electricidad(kwH)',
            3: 'Consumo Gas(m3)'}
+
+consumo_y_costos_servicios={'agua': (0.55, 4017),
+                            'electricidad': (11.98, 12892),
+                            'gas': (950, 89)}
 
 fallas={1: 'Dias esperados sin agua',
            2: 'Dias esperados sin electricidad',
@@ -60,6 +64,16 @@ direccion_viento={1: 'Norte',
                   7: 'Oeste',
                   8: 'Noroeste'}
 
-ecosistemas={1: 'Superficie Ecosistema 1 (Hec)',
-             2: 'Superficie Ecosistema 2 (Hec)',
-             3: 'Superficie Ecosistema 3 (hec)'}
+ecosistemas={1: 'Araucarias',
+             2: 'Eucalipto',
+             3: 'Roble',
+             4: 'Raulí',
+             5: 'Pino',
+             6: 'Urbano'}
+
+densidad={'Araucarias': 9,
+          'Eucalipto': 175,
+          'Roble': 133,
+          'Raulí': 145 ,
+          'Pino': 187,
+          'Urbano': 0}

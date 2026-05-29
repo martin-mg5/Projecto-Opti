@@ -1,11 +1,10 @@
 class nodo:
-    def __init__(self, nodo_numero, tipo_de_terreno, densidad_poblacion):
-        self.numero=nodo_numero
-        self.tipo=tipo_de_terreno
-        self.densidad=densidad_poblacion
+    def _init_(self, **kwargs):
+        for clave, valor in kwargs.items():
+            setattr(self, clave, valor)
 
 class arco:
-    def __init__(self, nodo_origen, nodo_destino, facilidad_propacion):
+    def _init_(self, nodo_origen, nodo_destino, facilidad_propacion):
         self.origen=nodo_origen
         self.destino=nodo_destino
         self.propagacion=facilidad_propacion
